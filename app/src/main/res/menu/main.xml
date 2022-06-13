@@ -1,0 +1,29 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:zombiesim="http://schemas.android.com/apk/res-auto">
+<!--
+    <item
+        android:title="Check for updates"
+        android:id="@+id/update_check_menu"
+        android:orderInCategory="100"
+        zombiesim:showAsAction="never"
+        />
+-->
+    <item
+        android:id="@+id/server_url_menu"
+        android:orderInCategory="100"
+        zombiesim:showAsAction="never"
+        android:title="Set Herd Immunity Server"/>
+
+    <item
+        android:id="@+id/demo_mode"
+        android:orderInCategory="100"
+        zombiesim:showAsAction="never"
+        android:title="Enter Demo Mode"/>
+
+    <item
+        android:id="@+id/about_menu"
+        android:orderInCategory="100"
+        zombiesim:showAsAction="never"
+        android:title="About"/>
+
+</menu>

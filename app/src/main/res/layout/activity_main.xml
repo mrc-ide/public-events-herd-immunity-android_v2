@@ -1,0 +1,160 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="25dp"
+    android:layout_marginRight="25dp"
+    android:clipToPadding="false"
+    android:id="@+id/mainlayout"
+    android:orientation="vertical">
+
+ <TextView
+        android:id="@+id/r0_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="36dp"
+        android:gravity="center_horizontal"
+        android:text="Basic Reproductive Rate (R0)"
+        android:textColor="#003e74"
+        android:textSize="32dp"
+        android:textStyle="bold" />
+
+    <SeekBar
+        android:id="@+id/r0_seek"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:max="8"
+        android:min="3"
+        android:padding="0dp"
+        android:paddingStart="0dp"
+        android:progressTint = "#009cbc"
+        android:paddingEnd="0dp"
+        android:progress="5"
+        android:scaleX="2"
+        android:scaleY="2" />
+
+
+    <TextView
+        android:id="@+id/r0_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="36dp"
+        android:gravity="center"
+        android:text="5"
+        android:textSize="48dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/v_spacer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:gravity="center"
+        android:text=" "
+        android:textSize="12dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/vacc_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="36dp"
+        android:gravity="center_horizontal"
+        android:text="Vaccination Coverage (%)"
+        android:textColor="#003e74"
+        android:textSize="32dp"
+        android:textStyle="bold" />
+
+
+    <SeekBar
+        android:id="@+id/vacc_seek"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:max="9"
+        android:min="0"
+        android:padding="0dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
+        android:progress="5"
+        android:progressTint = "#009cbc"
+        android:scaleX="2"
+        android:scaleY="2" />
+
+    <TextView
+        android:id="@+id/vacc_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="36dp"
+        android:gravity="center"
+        android:text="50 %"
+        android:textSize="48dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/v_spacer2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:gravity="center"
+        android:text=" "
+        android:textSize="12dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/name_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="36dp"
+        android:gravity="center_horizontal"
+        android:text="Name for data point"
+        android:textColor="#003e74"
+        android:textSize="32dp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/data_name"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:singleLine = "true"
+        />
+
+    <TextView
+        android:id="@+id/v_spacer3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:gravity="center"
+        android:text=" "
+        android:textSize="12dp"
+        android:textStyle="bold" />
+
+   <ImageView
+       android:id="@+id/go_button"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:src="@drawable/run_red"
+       android:gravity="center"
+       android:padding="0dp"
+       android:background="@null"
+       android:layout_gravity="center"
+       />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:gravity="right">
+
+        <ImageView
+            android:id="@+id/ic_logo"
+            android:layout_gravity="bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/ic_logo" />
+    </LinearLayout>
+</LinearLayout>
