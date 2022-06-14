@@ -32,8 +32,8 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "herd_immunity";
-    public static final String version = "2.0";
-    public static int internal_version = 2;
+    public static final String version = "2.1";
+    public static int internal_version = 21;
 
     int corePoolSize = 60;
     int maximumPoolSize = 80;
@@ -110,14 +110,26 @@ public class MainActivity extends AppCompatActivity {
 
     public void enterDemoMode() {
       new NetTask(this).executeOnExecutor(threadPoolExecutor,serverName + "herd.php?cmd=req&vacc=-1&r0=-1");
-      readyToGo();
+      readyToQueue();
+    }
+
+    public void readyToQueue() {
+        ImageView go = findViewById(R.id.go_button);
+        assert go != null;
+        runOnUiThread(() -> {
+            go.post(() -> go.setImageResource(R.drawable.queue));
+            go.setEnabled(true);
+        });
+
     }
 
     public void readyToGo() {
         ImageView go = findViewById(R.id.go_button);
         assert go != null;
-        go.setImageResource(R.drawable.run_red);
-        go.setEnabled(true);
+        runOnUiThread(() -> {
+            go.post(() -> go.setImageResource(R.drawable.run_red));
+            go.setEnabled(true);
+        });
     }
 
     public void hideKeyboard(View view) {
@@ -125,20 +137,15 @@ public class MainActivity extends AppCompatActivity {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
         View background = findViewById(R.id.mainlayout);
-        background.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                hideKeyboard(view);
-                return false;
-            }
+        background.setOnTouchListener((view, motionEvent) -> {
+            hideKeyboard(view);
+            return false;
         });
 
         ActionBar actionBar = getSupportActionBar();
@@ -153,7 +160,8 @@ public class MainActivity extends AppCompatActivity {
         // Load preferences
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        serverName = settings.getString("server", "http://192.168.1.42/epi");
+        serverName = settings.getString("server", "http://192.168.2.5/epi/");
+        if (!serverName.endsWith("/")) serverName += "/";
 
         // Move the R0 seekbar
 
@@ -191,7 +199,6 @@ public class MainActivity extends AppCompatActivity {
         vacc_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                System.out.println("ON STOP VACC");
                 state_vacc = String.valueOf(vacc_val.getText());
                 state_vacc_progress = vacc_seek.getProgress();
             }
@@ -202,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                vacc_val.setText(String.valueOf(progress * 10)+" %");
+                vacc_val.setText((progress * 10)+" %");
             }
         });
         ImageView go = findViewById(R.id.go_button);
@@ -211,25 +218,22 @@ public class MainActivity extends AppCompatActivity {
         EditText et = findViewById(R.id.data_name);
 
         MainActivity ma = this;
-        go.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String s = et.getText().toString();
-                if (s.length()==0) s = " ";
-                byte[] name = null;
-                try {
-                    name = et.getText().toString().getBytes("UTF-8");
-                } catch (Exception e) {}
+        go.setOnClickListener(view -> {
+            String s = et.getText().toString();
+            if (s.length()==0) s = " ";
+            byte[] name = null;
+            try {
+                name = et.getText().toString().getBytes("UTF-8");
+            } catch (Exception e) {}
 
-                go.setImageResource(R.drawable.run_grey);
-                go.setEnabled(false);
-                new NetTask(ma).executeOnExecutor(threadPoolExecutor,
-                        serverName + "herd.php?cmd=req"+
-                                "&r0="+state_r0_progress+
-                                "&vacc="+(10 * state_vacc_progress)+
-                                "&name="+ Base64.encodeToString(name, Base64.DEFAULT));
+            go.post(() -> go.setImageResource(R.drawable.run_grey));
+            go.setEnabled(false);
+            new NetTask(ma).executeOnExecutor(threadPoolExecutor,
+                    serverName + "herd.php?cmd=req"+
+                            "&r0="+state_r0_progress+
+                            "&vacc="+(10 * state_vacc_progress)+
+                            "&name="+ Base64.encodeToString(name, Base64.DEFAULT));
 
-            }
         });
 
         // First-time - get status

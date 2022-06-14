@@ -56,24 +56,8 @@ public class NetTask extends AsyncTask<String, Void, String> {
     }
 
     public void check_status() {
-        parent.runOnUiThread(new Runnable() {
-            public void run() {
-                progressCheckHandler.postDelayed(() -> new NetTask(parent).executeOnExecutor(parent.threadPoolExecutor,
-                        parent.serverName + "herd.php?cmd=get_status"), 1000);
-            }
-        });
-    }
-
-    public void report_ready() {
-        parent.runOnUiThread(new Runnable() {
-            public void run() {
-                parent.runOnUiThread(new Runnable() {
-                    public void run() {
-                        parent.readyToGo();
-                    }
-                });
-            }
-        });
+        parent.runOnUiThread(() -> progressCheckHandler.postDelayed(() -> new NetTask(parent).executeOnExecutor(parent.threadPoolExecutor,
+                parent.serverName + "herd.php?cmd=get_status"), 1000));
     }
 
     @Override
@@ -84,22 +68,21 @@ public class NetTask extends AsyncTask<String, Void, String> {
             URL url = new URL(params[0]);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             result = readStream(con.getInputStream());
-
             if (params[0].endsWith("get_status")) {
                 switch (result) {
                     case "WAIT": {
-                        report_ready();
+                        parent.readyToGo();
                         break;
                     }
                     case "DEMO": {
                         ImageView go = parent.findViewById(R.id.go_button);
-                        if (!go.isEnabled()) {
-                            check_status();
-                        }
+                        check_status();
+                        parent.readyToQueue();
                         break;
                     }
                     case "RUN": {
                         check_status();
+                        parent.readyToQueue();
                         break;
                     }
                 }
